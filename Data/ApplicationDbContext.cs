@@ -12,5 +12,6 @@ namespace Assignment_3.Data
         }
         public DbSet<Assignment_3.Models.Actor> Actor { get; set; }
         public DbSet<Assignment_3.Models.Movie> Movie { get; set; }
+        public DbSet<Assignment_3.Models.ActorMovie> ActorMovie { get; set; }
     }
 }
