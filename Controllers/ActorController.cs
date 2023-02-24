@@ -40,7 +40,23 @@ namespace Assignment_3.Controllers
                 return NotFound();
             }
 
-            return View(actor);
+            var actorMoviesVM = new ActorMoviesVM();
+            actorMoviesVM.Actor = actor;
+            actorMoviesVM.Movies = await _context.ActorMovie.Where(am => am.Actor.Id == actor.Id).Select(am => am.Movie).ToListAsync();
+
+            return View(actorMoviesVM);
+        }
+
+        public async Task<IActionResult> GetActorPhoto(int id)
+        {
+            var actor = await _context.Actor.FirstOrDefaultAsync(a => a.Id == id);
+
+            if(actor == null)
+            {
+                return NotFound();
+            }
+
+            return File(actor.Image, "image/jpg");
         }
 
         // GET: Actor/Create
@@ -54,10 +70,17 @@ namespace Assignment_3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Gender,IMBDLink,Image")] Actor actor)
+        public async Task<IActionResult> Create([Bind("Id,Name,Gender,IMBDLink,Image")] Actor actor, IFormFile photo)
         {
             if (ModelState.IsValid)
             {
+                if(photo != null && photo.Length > 0)
+                {
+                    var memoryStream = new MemoryStream();
+                    photo.CopyToAsync(memoryStream);
+                    actor.Image = memoryStream.ToArray();
+                }
+
                 _context.Add(actor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

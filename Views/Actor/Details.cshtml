@@ -1,4 +1,4 @@
-﻿@model Assignment_3.Models.Actor
+﻿@model Assignment_3.Models.ActorMoviesVM
 
 @{
     ViewData["Title"] = "Details";
@@ -11,32 +11,48 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Actor.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Actor.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
+            @Html.DisplayNameFor(model => model.Actor.Gender)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
+            @Html.DisplayFor(model => model.Actor.Gender)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IMBDLink)
+            @Html.DisplayNameFor(model => model.Actor.IMBDLink)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IMBDLink)
+            @Html.DisplayFor(model => model.Actor.IMBDLink)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
+
+        
+        @if(Model.Actor.Image != null)
+        {
+            <img src="@Url.Action("GetActorPhoto","Actor", new {Model.Actor.Id})"/>
+            <p>Hi</p>
+        }
+
+        @if(Model.Movies.Count > 0)
+        {
+            <h3>Movies Seen in</h3>   
+            @foreach(var movie in Model.Movies)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => movie.Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => movie.Title)
+                </dd>
+            
+            }
+        }
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Actor.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
