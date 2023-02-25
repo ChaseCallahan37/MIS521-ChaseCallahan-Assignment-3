@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Assignment_3.Interface;
 
 namespace Assignment_3.Models
 {
-    public class Actor
+    public class Actor : ITweetable
     {
         [Key]
         [Required]
@@ -15,5 +16,10 @@ namespace Assignment_3.Models
         public string IMBDLink { get; set; }
 
         public byte[]? Image { get; set; }
+
+        public string SearchTerm()
+        {
+            return Name;
+        }
     }
 }

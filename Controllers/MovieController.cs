@@ -25,6 +25,18 @@ namespace Assignment_3.Controllers
               return View(await _context.Movie.ToListAsync());
         }
 
+        public async Task<IActionResult> GetMoviePhoto(int id)
+        {
+            var movie = await _context.Movie.FirstOrDefaultAsync(a => a.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return File(movie.Poster, "image/jpg");
+        }
+
         // GET: Movie/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,10 +70,17 @@ namespace Assignment_3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,IMBDLink,Genre,dateOnly,Poster")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,IMBDLink,Genre,dateOnly,Poster")] Movie movie, IFormFile poster)
         {
             if (ModelState.IsValid)
             {
+                if (poster != null && poster.Length > 0)
+                {   
+                    var memoryStream = new MemoryStream();
+                    await poster.CopyToAsync(memoryStream);
+                    movie.Poster = memoryStream.ToArray();
+                }
+
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,7 +109,7 @@ namespace Assignment_3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,IMBDLink,Genre,dateOnly,Poster")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,IMBDLink,Genre,dateOnly,Poster")] Movie movie, IFormFile poster)
         {
             if (id != movie.Id)
             {
@@ -99,6 +118,14 @@ namespace Assignment_3.Controllers
 
             if (ModelState.IsValid)
             {
+
+                if (poster != null && poster.Length > 0)
+                {
+                    var memoryStream = new MemoryStream();
+                    await poster.CopyToAsync(memoryStream);
+                    movie.Poster = memoryStream.ToArray();
+                }
+
                 try
                 {
                     _context.Update(movie);

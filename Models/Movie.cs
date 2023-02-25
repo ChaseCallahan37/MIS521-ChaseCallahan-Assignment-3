@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Assignment_3.Interface;
 
 namespace Assignment_3.Models
 {
-    public class Movie
+    public class Movie : ITweetable
     {
         [Key]
         public int Id { get; set; }
@@ -13,5 +14,9 @@ namespace Assignment_3.Models
         public DateTime dateOnly { get; set; }
         public byte[]? Poster { get; set; }
 
+        public string SearchTerm()
+        {
+            return Title;
+        }
     }
 }

@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment_3.Data;
 using Assignment_3.Models;
+using Assignment_3.Interface;
 
 namespace Assignment_3.Controllers
 {
     public class ActorController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITweetWrapper _tweetWrapper;
 
-        public ActorController(ApplicationDbContext context)
+        public ActorController(ApplicationDbContext context, ITweetWrapper tweetWrapper)
         {
             _context = context;
+            _tweetWrapper = tweetWrapper;
         }
 
         // GET: Actor
@@ -41,8 +44,15 @@ namespace Assignment_3.Controllers
             }
 
             var actorMoviesVM = new ActorMoviesVM();
+
+
             actorMoviesVM.Actor = actor;
+
+            //Searches through db for movies that are associated
             actorMoviesVM.Movies = await _context.ActorMovie.Where(am => am.Actor.Id == actor.Id).Select(am => am.Movie).ToListAsync();
+            
+            //Searches twitter for tweets
+            actorMoviesVM.Tweets = await _tweetWrapper.GetTweetsAsync(actor);
 
             return View(actorMoviesVM);
         }
@@ -77,7 +87,7 @@ namespace Assignment_3.Controllers
                 if(photo != null && photo.Length > 0)
                 {
                     var memoryStream = new MemoryStream();
-                    photo.CopyToAsync(memoryStream);
+                    await photo.CopyToAsync(memoryStream);
                     actor.Image = memoryStream.ToArray();
                 }
 

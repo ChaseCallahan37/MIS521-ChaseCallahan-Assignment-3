@@ -1,4 +1,6 @@
 using Assignment_3.Data;
+using Assignment_3.Interface;
+using Assignment_3.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+//Adding Twitter API Client
+builder.Services.AddTransient<ITweetWrapper, TweetWrapper>();
 
 var app = builder.Build();
 

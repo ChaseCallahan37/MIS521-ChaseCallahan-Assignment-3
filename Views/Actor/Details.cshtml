@@ -51,6 +51,17 @@
             }
         }
     </dl>
+
+    <div>
+        @if(Model.Tweets.Length > 0)
+        {
+            <h1>Tweets</h1>
+            @foreach(var tweet in Model.Tweets)
+            {
+                <p>@Html.DisplayFor(model => tweet.Text)</p>
+            }
+        }
+    </div>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Actor.Id">Edit</a> |
