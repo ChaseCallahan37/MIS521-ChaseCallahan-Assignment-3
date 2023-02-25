@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment_3.Data;
 using Assignment_3.Models;
+using Assignment_3.Interface;
 
 namespace Assignment_3.Controllers
 {
     public class MovieController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITweetWrapper _tweetWrapper;
 
-        public MovieController(ApplicationDbContext context)
+        public MovieController(ApplicationDbContext context, ITweetWrapper tweetWrapper)
         {
             _context = context;
+            _tweetWrapper = tweetWrapper;
         }
 
         // GET: Movie
@@ -52,9 +55,15 @@ namespace Assignment_3.Controllers
                 return NotFound();
             }
 
+
+
             var movieActorsVM = new MovieActorsVM();
             movieActorsVM.Movie = movie;
+            //Searches for all actors that are associated with the movie
             movieActorsVM.Actors = await _context.ActorMovie.Where(am => am.Movie.Id == movie.Id).Select(am => am.Actor).ToListAsync();
+
+            //Searches for all tweets that are associated with the movie
+            movieActorsVM.Tweets = await _tweetWrapper.GetTweetsAsync(movie);
 
             return View(movieActorsVM);
         }

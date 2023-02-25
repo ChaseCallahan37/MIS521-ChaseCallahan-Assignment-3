@@ -25,13 +25,14 @@ namespace Assignment_3.Data.Migrations
                         column: x => x.ActorId,
                         principalTable: "Actor",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
+                 
                     table.ForeignKey(
                         name: "FK_ActorMovie_Movie_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movie",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

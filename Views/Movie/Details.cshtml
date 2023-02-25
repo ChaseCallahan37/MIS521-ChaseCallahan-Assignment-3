@@ -34,12 +34,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Movie.dateOnly)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Poster)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.Poster)
-        </dd>
+       
         @if(Model.Movie.Poster != null)
         {
             <img src="@Url.Action("GetMoviePhoto","Movie", new {Model.Movie.Id})" />
@@ -59,6 +54,17 @@
             }
         }
     </dl>
+
+    <div>
+        @if (Model.Tweets.Length > 0)
+        {
+            <h1>Tweets</h1>
+            @foreach (var tweet in Model.Tweets)
+            {
+                <p>@Html.DisplayFor(model => tweet.Text)</p>
+            }
+        }
+    </div>
  
 </div>
 <div>
