@@ -40,7 +40,11 @@ namespace Assignment_3.Controllers
                 return NotFound();
             }
 
-            return View(movie);
+            var movieActorsVM = new MovieActorsVM();
+            movieActorsVM.Movie = movie;
+            movieActorsVM.Actors = await _context.ActorMovie.Where(am => am.Movie.Id == movie.Id).Select(am => am.Actor).ToListAsync();
+
+            return View(movieActorsVM);
         }
 
         // GET: Movie/Create

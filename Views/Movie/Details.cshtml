@@ -1,4 +1,4 @@
-﻿@model Assignment_3.Models.Movie
+﻿@model Assignment_3.Models.MovieActorsVM
 
 @{
     ViewData["Title"] = "Details";
@@ -11,38 +11,53 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Movie.Title)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.Movie.Title)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IMBDLink)
+            @Html.DisplayNameFor(model => model.Movie.IMBDLink)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IMBDLink)
+            @Html.DisplayFor(model => model.Movie.IMBDLink)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre)
+            @Html.DisplayNameFor(model => model.Movie.Genre)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre)
+            @Html.DisplayFor(model => model.Movie.Genre)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.dateOnly)
+            @Html.DisplayNameFor(model => model.Movie.dateOnly)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.dateOnly)
+            @Html.DisplayFor(model => model.Movie.dateOnly)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Poster)
+            @Html.DisplayNameFor(model => model.Movie.Poster)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Poster)
+            @Html.DisplayFor(model => model.Movie.Poster)
         </dd>
+        @if (Model.Actors.Count > 0)
+        {
+            <h3>Movies Seen in</h3>
+            @foreach (var actor in Model.Actors)
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => actor.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => actor.Name)
+                </dd>
+
+            }
+        }
     </dl>
+ 
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Movie.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
