@@ -11,7 +11,7 @@ namespace Assignment_3.Models
         public string Title { get; set; }
         public string IMBDLink { get; set; }
         public string Genre { get; set; }
-        public DateTime dateOnly { get; set; }
+        public int ReleaseYear { get; set; }
         public byte[]? Poster { get; set; }
 
         public string SearchTerm()

@@ -11,6 +11,8 @@ namespace Assignment_3.Models
         [Required]
         public string Name { get; set; }
         [Required]
+        public int Age { get; set; }
+        [Required]
         public string Gender { get; set; }
         [Required]
         public string IMBDLink { get; set; }

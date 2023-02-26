@@ -119,11 +119,23 @@ namespace Assignment_3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Gender,IMBDLink,Image")] Actor actor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Age,Gender,IMBDLink")] Actor actor, IFormFile image)
         {
             if (id != actor.Id)
             {
                 return NotFound();
+            }
+            //If the image is null, prevent error checking and saving to the database
+            if(image == null)
+            {
+                ModelState.Remove("image");
+                _context.Entry(actor).Property("Image").IsModified = false;
+            }
+            else if(image.Length > 0) 
+            {
+                var memoryStream = new MemoryStream();
+                await image.CopyToAsync(memoryStream);
+                actor.Image = memoryStream.ToArray();
             }
 
             if (ModelState.IsValid)

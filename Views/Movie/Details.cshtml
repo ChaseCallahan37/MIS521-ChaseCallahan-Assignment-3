@@ -4,68 +4,59 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Movie</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.IMBDLink)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.IMBDLink)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.Genre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.Genre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie.dateOnly)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.dateOnly)
-        </dd>
-       
-        @if(Model.Movie.Poster != null)
+<div class="detail-container">
+    <h3 class="detail-title">@Html.DisplayFor(model => model.Movie.Title)</h3>
+    <div class="col col-lg">
+        @if (Model.Movie.Poster != null)
         {
-            <img src="@Url.Action("GetMoviePhoto","Movie", new {Model.Movie.Id})" />
+            <image class="detail-image" src="@Url.Action("GetMoviePhoto","Movie", new {Model.Movie.Id})" />
         }
-        @if (Model.Actors.Count > 0)
+
+    </div>
+    <div class="col col-full">
+            <p class="detail-info"><strong>Title: </strong>@Html.DisplayFor(model => model.Movie.Title)</p>
+        <p class="detail-info"><strong>IMBD: </strong><a href="https://www.imdb.com/title/tt0162222/" target="_blank">@Html.DisplayFor(model => model.Movie.IMBDLink)</a></p>
+        <p class="detail-info"><strong>Genre: </strong>@Html.DisplayFor(model => model.Movie.Genre)</p>
+        <p class="detail-info"><strong>Release Date: </strong>@Html.DisplayFor(model => model.Movie.ReleaseYear)</p>
+        @if(Model.Actors.Count > 0)
         {
-            <h3>Movies Seen in</h3>
-            @foreach (var actor in Model.Actors)
+            <p class="detail-info"><strong>Starring Actors</strong></p>
+            <ul>
+            @foreach(var actor in Model.Actors)
             {
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => actor.Name)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => actor.Name)
-                </dd>
-
+                    <li><a asp-controller="Actor" asp-action="Details" asp-route-id="@actor.Id">@Html.DisplayFor(model => actor.Name)</a></li>
             }
+            </ul>
         }
-    </dl>
+    </div>  
+    
 
     <div>
         @if (Model.Tweets.Length > 0)
         {
-            <h1>Tweets</h1>
-            @foreach (var tweet in Model.Tweets)
-            {
-                <p>@Html.DisplayFor(model => tweet.Text)</p>
-            }
+
+            <table class="tweeter-table">
+                <thead>
+                    <tr>
+                        <th>Tweet</th>
+                        <th>Sentiment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tweet in Model.Tweets)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(model => tweet.Text)</td>
+                            <td></td>
+                        </tr>
+                    }
+                    
+                </tbody>
+            </table>
+
         }
     </div>
- 
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Movie.Id">Edit</a> |
