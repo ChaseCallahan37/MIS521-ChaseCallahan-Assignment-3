@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Assignment_3.Data;
 using Assignment_3.Models;
 using Assignment_3.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Assignment_3.Controllers
 {
@@ -125,8 +126,11 @@ namespace Assignment_3.Controllers
             {
                 return NotFound();
             }
+
+            var dbactor = await _context.Actor.FirstOrDefaultAsync(a => a.Id == id);
+
             //If the image is null, prevent error checking and saving to the database
-            if(image == null)
+            if (image == null)
             {
                 ModelState.Remove("image");
                 _context.Entry(actor).Property("Image").IsModified = false;
@@ -137,6 +141,8 @@ namespace Assignment_3.Controllers
                 await image.CopyToAsync(memoryStream);
                 actor.Image = memoryStream.ToArray();
             }
+            if(actor.Image == null)
+            actor.Image = dbactor.Image;
 
             if (ModelState.IsValid)
             {

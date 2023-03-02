@@ -120,6 +120,8 @@ namespace Assignment_3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,IMBDLink,Genre,dateOnly,Poster")] Movie movie, IFormFile poster)
         {
+
+
             if (id != movie.Id)
             {
                 return NotFound();

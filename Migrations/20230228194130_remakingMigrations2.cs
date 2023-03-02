@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace Assignment_3.Data.Migrations
+namespace Assignment_3.Migrations
 {
-    public partial class addedActor : Migration
+    public partial class remakingMigrations2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
