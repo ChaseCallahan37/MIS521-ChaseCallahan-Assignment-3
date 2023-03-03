@@ -63,7 +63,8 @@ namespace Assignment_3.Controllers
             movieActorsVM.Actors = await _context.ActorMovie.Where(am => am.Movie.Id == movie.Id).Select(am => am.Actor).ToListAsync();
 
             //Searches for all tweets that are associated with the movie
-            movieActorsVM.Tweets = await _tweetWrapper.GetTweetsAsync(movie);
+             await _tweetWrapper.GetTweetsAsync(movie);
+            movieActorsVM.TweetWrapper = (TweetWrapper)_tweetWrapper;
 
             return View(movieActorsVM);
         }
@@ -79,7 +80,7 @@ namespace Assignment_3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,IMBDLink,Genre,dateOnly,Poster")] Movie movie, IFormFile poster)
+        public async Task<IActionResult> Create([Bind("Id,Title,IMBDLink,Genre,ReleaseDate,Poster")] Movie movie, IFormFile poster)
         {
             if (ModelState.IsValid)
             {
@@ -118,7 +119,7 @@ namespace Assignment_3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,IMBDLink,Genre,dateOnly,Poster")] Movie movie, IFormFile poster)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,IMBDLink,Genre,ReleaseYear")] Movie movie, IFormFile poster)
         {
 
 
@@ -127,8 +128,16 @@ namespace Assignment_3.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if(poster == null)
             {
+            
+               ModelState.Remove("Poster");
+               var movieDb = await _context.Movie.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+               movie.Poster = movieDb.Poster;
+            }
+
+           if (ModelState.IsValid)
+           {
 
                 if (poster != null && poster.Length > 0)
                 {

@@ -1,4 +1,5 @@
-﻿using Tweetinvi.Models.V2;
+﻿using Assignment_3.Interface;
+using Tweetinvi.Models.V2;
 
 namespace Assignment_3.Models
 {
@@ -6,6 +7,6 @@ namespace Assignment_3.Models
     {
         public Movie Movie { get; set; }
         public List<Actor> Actors { get; set; }
-        public TweetV2[] Tweets { get; set; }
+        public TweetWrapper TweetWrapper { get; set; }
     }
 }

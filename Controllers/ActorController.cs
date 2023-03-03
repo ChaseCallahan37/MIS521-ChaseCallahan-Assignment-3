@@ -127,13 +127,12 @@ namespace Assignment_3.Controllers
                 return NotFound();
             }
 
-            var dbactor = await _context.Actor.FirstOrDefaultAsync(a => a.Id == id);
-
             //If the image is null, prevent error checking and saving to the database
             if (image == null)
             {
                 ModelState.Remove("image");
                 _context.Entry(actor).Property("Image").IsModified = false;
+               
             }
             else if(image.Length > 0) 
             {
@@ -142,9 +141,13 @@ namespace Assignment_3.Controllers
                 actor.Image = memoryStream.ToArray();
             }
             if(actor.Image == null)
-            actor.Image = dbactor.Image;
+            {
+                var dbActor = await _context.Actor.FirstOrDefaultAsync(a => a.Id == id);
+                actor.Image = dbActor.Image;
+            }
 
-            if (ModelState.IsValid)
+            ModelState.ClearValidationState(nameof(actor));
+            if (TryValidateModel(actor, nameof(actor)))
             {
                 try
                 {

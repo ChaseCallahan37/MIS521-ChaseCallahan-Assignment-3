@@ -18,7 +18,7 @@
         <p class="detail-info"><strong>IMBD: </strong><a href="https://www.imdb.com/title/tt0162222/" target="_blank">@Html.DisplayFor(model => model.Movie.IMBDLink)</a></p>
         <p class="detail-info"><strong>Genre: </strong>@Html.DisplayFor(model => model.Movie.Genre)</p>
         <p class="detail-info"><strong>Release Date: </strong>@Html.DisplayFor(model => model.Movie.ReleaseYear)</p>
-        @if(Model.Actors.Count > 0)
+      @if(Model.Actors.Count > 0)
         {
             <p class="detail-info"><strong>Starring Actors</strong></p>
             <ul>
@@ -26,14 +26,14 @@
             {
                     <li><a asp-controller="Actor" asp-action="Details" asp-route-id="@actor.Id">@Html.DisplayFor(model => actor.Name)</a></li>
             }
-            </ul>
+            </ul> 
         }
     </div>  
     
 
     <div>
-        @if (Model.Tweets.Length > 0)
-        {
+        
+            
 
             <table class="tweeter-table">
                 <thead>
@@ -43,18 +43,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var tweet in Model.Tweets)
+                    @foreach (var tweet in Model.TweetWrapper.InternalTweets)
                     {
-                        <tr>
-                            <td>@Html.DisplayFor(model => tweet.Text)</td>
-                            <td></td>
+                    <tr>
+                        
+                            <td>@Html.DisplayFor(model => tweet.Tweet)</td>
+                            <td>@Html.DisplayFor(model => tweet.Sentiment)</td>
                         </tr>
                     }
                     
                 </tbody>
             </table>
 
-        }
+        
     </div>
 
 </div>
